@@ -12,9 +12,9 @@ namespace AP_EV4.Controllers
 {
     public class UsuariosController : Controller
     {
-        private readonly AP_EV4Context _context;
+        private readonly EjemploDbContext _context;
 
-        public UsuariosController(AP_EV4Context context)
+        public UsuariosController(EjemploDbContext context)
         {
             _context = context;
         }
@@ -22,19 +22,19 @@ namespace AP_EV4.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-            var aP_EV4Context = _context.Usuario.Include(u => u.Rol);
-            return View(await aP_EV4Context.ToListAsync());
+            var ejemploDbContext = _context.Usuarios.Include(u => u.Rol);
+            return View(await ejemploDbContext.ToListAsync());
         }
 
         // GET: Usuarios/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Usuario == null)
+            if (id == null || _context.Usuarios == null)
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuario
+            var usuario = await _context.Usuarios
                 .Include(u => u.Rol)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (usuario == null)
@@ -48,7 +48,7 @@ namespace AP_EV4.Controllers
         // GET: Usuarios/Create
         public IActionResult Create()
         {
-            ViewData["RolId"] = new SelectList(_context.Set<Rol>(), "Id", "Id");
+            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id");
             return View();
         }
 
@@ -65,24 +65,24 @@ namespace AP_EV4.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Set<Rol>(), "Id", "Id", usuario.RolId);
+            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id", usuario.RolId);
             return View(usuario);
         }
 
         // GET: Usuarios/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Usuario == null)
+            if (id == null || _context.Usuarios == null)
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuario.FindAsync(id);
+            var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario == null)
             {
                 return NotFound();
             }
-            ViewData["RolId"] = new SelectList(_context.Set<Rol>(), "Id", "Id", usuario.RolId);
+            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id", usuario.RolId);
             return View(usuario);
         }
 
@@ -118,19 +118,19 @@ namespace AP_EV4.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Set<Rol>(), "Id", "Id", usuario.RolId);
+            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id", usuario.RolId);
             return View(usuario);
         }
 
         // GET: Usuarios/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Usuario == null)
+            if (id == null || _context.Usuarios == null)
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuario
+            var usuario = await _context.Usuarios
                 .Include(u => u.Rol)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (usuario == null)
@@ -146,14 +146,14 @@ namespace AP_EV4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Usuario == null)
+            if (_context.Usuarios == null)
             {
-                return Problem("Entity set 'AP_EV4Context.Usuario'  is null.");
+                return Problem("Entity set 'EjemploDbContext.Usuarios'  is null.");
             }
-            var usuario = await _context.Usuario.FindAsync(id);
+            var usuario = await _context.Usuarios.FindAsync(id);
             if (usuario != null)
             {
-                _context.Usuario.Remove(usuario);
+                _context.Usuarios.Remove(usuario);
             }
             
             await _context.SaveChangesAsync();
@@ -162,7 +162,7 @@ namespace AP_EV4.Controllers
 
         private bool UsuarioExists(int id)
         {
-          return (_context.Usuario?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Usuarios?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

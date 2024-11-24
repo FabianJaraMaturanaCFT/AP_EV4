@@ -1,11 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using static AP_EV4.Data.DBContext;
 using Microsoft.Extensions.DependencyInjection;
 using AP_EV4.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<AP_EV4Context>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AP_EV4Context") ?? throw new InvalidOperationException("Connection string 'AP_EV4Context' not found.")));
 
 builder.Services.AddDbContext<EjemploDbContext>(options =>
 {

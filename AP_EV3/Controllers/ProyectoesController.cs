@@ -12,9 +12,9 @@ namespace AP_EV4.Controllers
 {
     public class ProyectoesController : Controller
     {
-        private readonly AP_EV4Context _context;
+        private readonly EjemploDbContext _context;
 
-        public ProyectoesController(AP_EV4Context context)
+        public ProyectoesController(EjemploDbContext context)
         {
             _context = context;
         }
@@ -22,20 +22,20 @@ namespace AP_EV4.Controllers
         // GET: Proyectoes
         public async Task<IActionResult> Index()
         {
-              return _context.Proyecto != null ? 
-                          View(await _context.Proyecto.ToListAsync()) :
-                          Problem("Entity set 'AP_EV4Context.Proyecto'  is null.");
+              return _context.Proyectos != null ? 
+                          View(await _context.Proyectos.ToListAsync()) :
+                          Problem("Entity set 'EjemploDbContext.Proyectos'  is null.");
         }
 
         // GET: Proyectoes/Details/5
         public async Task<IActionResult> Details(string id)
         {
-            if (id == null || _context.Proyecto == null)
+            if (id == null || _context.Proyectos == null)
             {
                 return NotFound();
             }
 
-            var proyecto = await _context.Proyecto
+            var proyecto = await _context.Proyectos
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (proyecto == null)
             {
@@ -70,12 +70,12 @@ namespace AP_EV4.Controllers
         // GET: Proyectoes/Edit/5
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null || _context.Proyecto == null)
+            if (id == null || _context.Proyectos == null)
             {
                 return NotFound();
             }
 
-            var proyecto = await _context.Proyecto.FindAsync(id);
+            var proyecto = await _context.Proyectos.FindAsync(id);
             if (proyecto == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace AP_EV4.Controllers
         // GET: Proyectoes/Delete/5
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.Proyecto == null)
+            if (id == null || _context.Proyectos == null)
             {
                 return NotFound();
             }
 
-            var proyecto = await _context.Proyecto
+            var proyecto = await _context.Proyectos
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (proyecto == null)
             {
@@ -141,14 +141,14 @@ namespace AP_EV4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            if (_context.Proyecto == null)
+            if (_context.Proyectos == null)
             {
-                return Problem("Entity set 'AP_EV4Context.Proyecto'  is null.");
+                return Problem("Entity set 'EjemploDbContext.Proyectos'  is null.");
             }
-            var proyecto = await _context.Proyecto.FindAsync(id);
+            var proyecto = await _context.Proyectos.FindAsync(id);
             if (proyecto != null)
             {
-                _context.Proyecto.Remove(proyecto);
+                _context.Proyectos.Remove(proyecto);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace AP_EV4.Controllers
 
         private bool ProyectoExists(string id)
         {
-          return (_context.Proyecto?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Proyectos?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

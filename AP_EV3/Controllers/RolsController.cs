@@ -12,9 +12,9 @@ namespace AP_EV4.Controllers
 {
     public class RolsController : Controller
     {
-        private readonly AP_EV4Context _context;
+        private readonly EjemploDbContext _context;
 
-        public RolsController(AP_EV4Context context)
+        public RolsController(EjemploDbContext context)
         {
             _context = context;
         }
@@ -22,20 +22,20 @@ namespace AP_EV4.Controllers
         // GET: Rols
         public async Task<IActionResult> Index()
         {
-              return _context.Rol != null ? 
-                          View(await _context.Rol.ToListAsync()) :
-                          Problem("Entity set 'AP_EV4Context.Rol'  is null.");
+              return _context.Roles != null ? 
+                          View(await _context.Roles.ToListAsync()) :
+                          Problem("Entity set 'EjemploDbContext.Roles'  is null.");
         }
 
         // GET: Rols/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Rol == null)
+            if (id == null || _context.Roles == null)
             {
                 return NotFound();
             }
 
-            var rol = await _context.Rol
+            var rol = await _context.Roles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rol == null)
             {
@@ -70,12 +70,12 @@ namespace AP_EV4.Controllers
         // GET: Rols/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Rol == null)
+            if (id == null || _context.Roles == null)
             {
                 return NotFound();
             }
 
-            var rol = await _context.Rol.FindAsync(id);
+            var rol = await _context.Roles.FindAsync(id);
             if (rol == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace AP_EV4.Controllers
         // GET: Rols/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Rol == null)
+            if (id == null || _context.Roles == null)
             {
                 return NotFound();
             }
 
-            var rol = await _context.Rol
+            var rol = await _context.Roles
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rol == null)
             {
@@ -141,14 +141,14 @@ namespace AP_EV4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Rol == null)
+            if (_context.Roles == null)
             {
-                return Problem("Entity set 'AP_EV4Context.Rol'  is null.");
+                return Problem("Entity set 'EjemploDbContext.Roles'  is null.");
             }
-            var rol = await _context.Rol.FindAsync(id);
+            var rol = await _context.Roles.FindAsync(id);
             if (rol != null)
             {
-                _context.Rol.Remove(rol);
+                _context.Roles.Remove(rol);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace AP_EV4.Controllers
 
         private bool RolExists(int id)
         {
-          return (_context.Rol?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Roles?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

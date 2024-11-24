@@ -12,9 +12,9 @@ namespace AP_EV4.Controllers
 {
     public class ClientesController : Controller
     {
-        private readonly AP_EV4Context _context;
+        private readonly EjemploDbContext _context;
 
-        public ClientesController(AP_EV4Context context)
+        public ClientesController(EjemploDbContext context)
         {
             _context = context;
         }
@@ -22,20 +22,20 @@ namespace AP_EV4.Controllers
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-              return _context.Cliente != null ? 
-                          View(await _context.Cliente.ToListAsync()) :
-                          Problem("Entity set 'AP_EV4Context.Cliente'  is null.");
+              return _context.Clientes != null ? 
+                          View(await _context.Clientes.ToListAsync()) :
+                          Problem("Entity set 'EjemploDbContext.Clientes'  is null.");
         }
 
         // GET: Clientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Cliente == null)
+            if (id == null || _context.Clientes == null)
             {
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
+            var cliente = await _context.Clientes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cliente == null)
             {
@@ -70,12 +70,12 @@ namespace AP_EV4.Controllers
         // GET: Clientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Cliente == null)
+            if (id == null || _context.Clientes == null)
             {
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente.FindAsync(id);
+            var cliente = await _context.Clientes.FindAsync(id);
             if (cliente == null)
             {
                 return NotFound();
@@ -121,12 +121,12 @@ namespace AP_EV4.Controllers
         // GET: Clientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Cliente == null)
+            if (id == null || _context.Clientes == null)
             {
                 return NotFound();
             }
 
-            var cliente = await _context.Cliente
+            var cliente = await _context.Clientes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cliente == null)
             {
@@ -141,14 +141,14 @@ namespace AP_EV4.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Cliente == null)
+            if (_context.Clientes == null)
             {
-                return Problem("Entity set 'AP_EV4Context.Cliente'  is null.");
+                return Problem("Entity set 'EjemploDbContext.Clientes'  is null.");
             }
-            var cliente = await _context.Cliente.FindAsync(id);
+            var cliente = await _context.Clientes.FindAsync(id);
             if (cliente != null)
             {
-                _context.Cliente.Remove(cliente);
+                _context.Clientes.Remove(cliente);
             }
             
             await _context.SaveChangesAsync();
@@ -157,7 +157,7 @@ namespace AP_EV4.Controllers
 
         private bool ClienteExists(int id)
         {
-          return (_context.Cliente?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Clientes?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

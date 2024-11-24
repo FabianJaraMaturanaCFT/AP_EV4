@@ -12,9 +12,9 @@ namespace AP_EV4.Controllers
 {
     public class LogsController : Controller
     {
-        private readonly AP_EV4Context _context;
+        private readonly EjemploDbContext _context;
 
-        public LogsController(AP_EV4Context context)
+        public LogsController(EjemploDbContext context)
         {
             _context = context;
         }
@@ -22,8 +22,8 @@ namespace AP_EV4.Controllers
         // GET: Logs
         public async Task<IActionResult> Index()
         {
-            var aP_EV4Context = _context.Log.Include(l => l.Usuario);
-            return View(await aP_EV4Context.ToListAsync());
+            var ejemploDbContext = _context.Log.Include(l => l.Usuario);
+            return View(await ejemploDbContext.ToListAsync());
         }
 
         // GET: Logs/Details/5
@@ -48,7 +48,7 @@ namespace AP_EV4.Controllers
         // GET: Logs/Create
         public IActionResult Create()
         {
-            ViewData["UsuarioId"] = new SelectList(_context.Set<Usuario>(), "Id", "Id");
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "Id");
             return View();
         }
 
@@ -65,7 +65,7 @@ namespace AP_EV4.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Set<Usuario>(), "Id", "Id", log.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "Id", log.UsuarioId);
             return View(log);
         }
 
@@ -82,7 +82,7 @@ namespace AP_EV4.Controllers
             {
                 return NotFound();
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Set<Usuario>(), "Id", "Id", log.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "Id", log.UsuarioId);
             return View(log);
         }
 
@@ -118,7 +118,7 @@ namespace AP_EV4.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UsuarioId"] = new SelectList(_context.Set<Usuario>(), "Id", "Id", log.UsuarioId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "Id", "Id", log.UsuarioId);
             return View(log);
         }
 
@@ -148,7 +148,7 @@ namespace AP_EV4.Controllers
         {
             if (_context.Log == null)
             {
-                return Problem("Entity set 'AP_EV4Context.Log'  is null.");
+                return Problem("Entity set 'EjemploDbContext.Log'  is null.");
             }
             var log = await _context.Log.FindAsync(id);
             if (log != null)
