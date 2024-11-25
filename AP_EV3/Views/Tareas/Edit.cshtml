@@ -1,58 +1,89 @@
 ﻿@model AP_EV4.Models.Tarea
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Tarea - Infolutions";
 }
 
-<h1>Edit</h1>
-
-<h4>Tarea</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Editar Tarea - Infolutions</title>
+    <style>
+        body {
+            background-color: #f4f7f6;
+            font-family: Arial, sans-serif;
+        }
+        .card {
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Editar Tarea</h4>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Edit">
+                            <input type="hidden" asp-for="Id" />
+                            <div class="form-group">
+                                <label for="Descripcion">Descripción</label>
+                                <input type="text" asp-for="Descripcion" class="form-control" id="Descripcion">
+                                <span asp-validation-for="Descripcion" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="Estado">Estado</label>
+                                <select asp-for="Estado" class="form-control">
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="En progreso">En progreso</option>
+                                    <option value="Finalizado">Finalizado</option>
+                                </select>
+                                <span asp-validation-for="Estado" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="FechaInicio">Fecha de Inicio</label>
+                                <input type="date" asp-for="FechaInicio" class="form-control" id="FechaInicio">
+                                <span asp-validation-for="FechaInicio" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="FechaFin">Fecha de Fin</label>
+                                <input type="date" asp-for="FechaFin" class="form-control" id="FechaFin">
+                                <span asp-validation-for="FechaFin" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="ProyectoId">Proyecto</label>
+                                <select asp-for="ProyectoId" class="form-control" asp-items="ViewBag.Proyectos"></select>
+                                <span asp-validation-for="ProyectoId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="UsuarioId">Usuario</label>
+                                <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.Usuarios"></select>
+                                <span asp-validation-for="UsuarioId" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Guardar Cambios
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Volver
+                            </a>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Estado" class="control-label"></label>
-                <input asp-for="Estado" class="form-control" />
-                <span asp-validation-for="Estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaInicio" class="control-label"></label>
-                <input asp-for="FechaInicio" class="form-control" />
-                <span asp-validation-for="FechaInicio" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaFin" class="control-label"></label>
-                <input asp-for="FechaFin" class="form-control" />
-                <span asp-validation-for="FechaFin" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProyectoId" class="control-label"></label>
-                <select asp-for="ProyectoId" class="form-control" asp-items="ViewBag.ProyectoId"></select>
-                <span asp-validation-for="ProyectoId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UsuarioId" class="control-label"></label>
-                <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId"></select>
-                <span asp-validation-for="UsuarioId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
