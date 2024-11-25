@@ -1,0 +1,75 @@
+﻿@model AP_EV4.Models.Cliente
+
+@{
+    ViewData["Title"] = "Agregar Cliente - Infolutions";
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Agregar Cliente - Infolutions</title>
+    <style>
+        body {
+            background-color: #f4f7f6;
+            font-family: Arial, sans-serif;
+        }
+
+        .card {
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Agregar Nuevo Cliente</h4>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Create">
+                            <div class="form-group">
+                                <label for="Nombre">Nombre</label>
+                                <input type="text" asp-for="Nombre" class="form-control" id="Nombre" placeholder="Ingrese el nombre del cliente">
+                                <span asp-validation-for="Nombre" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="Email">Email</label>
+                                <input type="email" asp-for="Email" class="form-control" id="Email" placeholder="Ingrese el email del cliente">
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="Telefono">Teléfono</label>
+                                <input type="text" asp-for="Telefono" class="form-control" id="Telefono" placeholder="Ingrese el teléfono del cliente">
+                                <span asp-validation-for="Telefono" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="Direccion">Dirección</label>
+                                <input type="text" asp-for="Direccion" class="form-control" id="Direccion" placeholder="Ingrese la dirección del cliente">
+                                <span asp-validation-for="Direccion" class="text-danger"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Guardar
+                            </button>
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left"></i> Volver
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
