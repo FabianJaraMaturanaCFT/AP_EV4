@@ -2,12 +2,15 @@
 {
     public class Proyecto
     {
-        public string Id { get; set; }
-        public string NombreProyecto { get; set; }
-        public string Descripcion { get; set; }
-        public int Cliente_proyecto { get; set; }
-        public Cliente Usuario { get; set; }
-        public DateTime FechaDeCreacion { get; set; }
+        public int Id { get; set; }
+        public string Nombre { get; set; }  
+        public string Descripcion { get; set; }  
+        public DateTime FechaInicio { get; set; } 
+        public DateTime FechaFin { get; set; }  
+        public int ClienteId { get; set; }  
+        public Cliente Cliente { get; set; }  
+        public int UsuarioId { get; set; }  
+        public Usuario Usuario { get; set; }  
 
     }
 }

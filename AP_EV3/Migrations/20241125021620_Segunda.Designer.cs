@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AP_EV4.Migrations
 {
     [DbContext(typeof(EjemploDbContext))]
-    [Migration("20241124032739_Inicial")]
-    partial class Inicial
+    [Migration("20241125021620_Segunda")]
+    partial class Segunda
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,11 +32,11 @@ namespace AP_EV4.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("CorreoElectronico")
+                    b.Property<string>("Direccion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Direccion")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -68,32 +68,37 @@ namespace AP_EV4.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
+                    b.Property<string>("Usuario")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UsuarioId");
-
-                    b.ToTable("Log");
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("AP_EV4.Models.Proyecto", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Property<int>("Cliente_proyecto")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ClienteId")
                         .HasColumnType("int");
 
                     b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("FechaDeCreacion")
+                    b.Property<DateTime>("FechaFin")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NombreProyecto")
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -101,6 +106,8 @@ namespace AP_EV4.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClienteId");
 
                     b.HasIndex("UsuarioId");
 
@@ -115,7 +122,7 @@ namespace AP_EV4.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Nombre_Rol")
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -127,13 +134,60 @@ namespace AP_EV4.Migrations
                         new
                         {
                             Id = 1,
-                            Nombre_Rol = "Agente"
+                            Nombre = "Agente"
                         },
                         new
                         {
                             Id = 2,
-                            Nombre_Rol = "Supervisor"
+                            Nombre = "Administrador"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nombre = "Supervisor"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Nombre = "Empleado"
                         });
+                });
+
+            modelBuilder.Entity("AP_EV4.Models.Tarea", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaFin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ProyectoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProyectoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Tareas");
                 });
 
             modelBuilder.Entity("AP_EV4.Models.Usuario", b =>
@@ -148,14 +202,18 @@ namespace AP_EV4.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("NombreUsuario")
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RolId")
                         .HasColumnType("int");
 
-                    b.Property<string>("correo")
+                    b.Property<string>("Telefono")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -166,24 +224,40 @@ namespace AP_EV4.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("AP_EV4.Models.Log", b =>
+            modelBuilder.Entity("AP_EV4.Models.Proyecto", b =>
                 {
+                    b.HasOne("AP_EV4.Models.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("ClienteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("AP_EV4.Models.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Cliente");
+
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("AP_EV4.Models.Proyecto", b =>
+            modelBuilder.Entity("AP_EV4.Models.Tarea", b =>
                 {
-                    b.HasOne("AP_EV4.Models.Cliente", "Usuario")
-                        .WithMany("Proyectos")
-                        .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("AP_EV4.Models.Proyecto", "Proyecto")
+                        .WithMany()
+                        .HasForeignKey("ProyectoId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.HasOne("AP_EV4.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Proyecto");
 
                     b.Navigation("Usuario");
                 });
@@ -191,22 +265,12 @@ namespace AP_EV4.Migrations
             modelBuilder.Entity("AP_EV4.Models.Usuario", b =>
                 {
                     b.HasOne("AP_EV4.Models.Rol", "Rol")
-                        .WithMany("Usuarios")
+                        .WithMany()
                         .HasForeignKey("RolId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Rol");
-                });
-
-            modelBuilder.Entity("AP_EV4.Models.Cliente", b =>
-                {
-                    b.Navigation("Proyectos");
-                });
-
-            modelBuilder.Entity("AP_EV4.Models.Rol", b =>
-                {
-                    b.Navigation("Usuarios");
                 });
 #pragma warning restore 612, 618
         }
