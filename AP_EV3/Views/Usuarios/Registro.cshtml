@@ -1,0 +1,32 @@
+﻿@model AP_EV4.Models.Usuario
+
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<div class="container">
+    <h2>Registro</h2>
+    <form asp-action="Registro" method="post">
+        <div class="form-group">
+            <label for="Nombre">Nombre</label>
+            <input type="text" asp-for="Nombre" class="form-control" required />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Email">Correo Electrónico</label>
+            <input type="email" asp-for="Email" class="form-control" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Contrasenia">Contraseña</label>
+            <input type="password" asp-for="Contrasenia" class="form-control" required />
+            <span asp-validation-for="Contrasenia" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label for="Telefono">Teléfono</label>
+            <input type="text" asp-for="Telefono" class="form-control" />
+            <span asp-validation-for="Telefono" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Registrar</button>
+    </form>
+</div>

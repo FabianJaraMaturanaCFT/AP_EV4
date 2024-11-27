@@ -10,6 +10,11 @@
     <link rel="stylesheet" href="~/Infolutions.styles.css" asp-append-version="true" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    @{
+        //var userRole = Context.Session.GetString("UserRole");
+    }
+
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -85,7 +90,7 @@
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/images/LOGO.png" alt="Logo Infolutions" />
+                    <img src="~/images/LOGO.png" alt="Logo" />
                     Infolutions
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav"
@@ -113,11 +118,17 @@
                             <a class="nav-link @(ViewData["ActivePage"] == "Tareas" ? "active" : "")" asp-controller="Tareas" asp-action="Index">Tareas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(ViewData["ActivePage"] == "Logs" ? "active" : "")" asp-controller="Logs" asp-action="Index">Registros</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link @(ViewData["ActivePage"] == "Roles" ? "active" : "")" asp-controller="Rols" asp-action="Index">Roles</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewData["ActivePage"] == "Login" ? "active" : "")" asp-controller="Usuarios" asp-action="Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewData["ActivePage"] == "Registro" ? "active" : "")" asp-controller="Usuarios" asp-action="Registro">Registro</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Usuarios" asp-action="Logout">Logout</a>
+                        </li
                     </ul>
                     <form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Buscar" aria-label="Buscar">

@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using AP_EV4.Data;
 using AP_EV4.Models;
 
@@ -17,6 +19,74 @@ namespace AP_EV4.Controllers
         public UsuariosController(EjemploDbContext context)
         {
             _context = context;
+        }
+
+        public IActionResult Login()
+        {
+            ViewData["ActivePage"] = "Login";
+            return View();
+        }
+
+        // POST: Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(string email, string contrasenia)
+        {
+            var user = await _context.Usuarios.Include(u => u.Rol)
+                .FirstOrDefaultAsync(u => u.Email == email && u.Contrasenia == contrasenia);
+
+            if (user != null)
+            {
+                HttpContext.Session.SetInt32("UserId", user.Id);
+                HttpContext.Session.SetString("UserName", user.Nombre);
+                HttpContext.Session.SetString("UserRole", user.Rol.Nombre);
+
+                // Redireccionar basado en roles
+                switch (user.Rol.Nombre.ToLower())
+                {
+                    case "Supervisor":
+                        return RedirectToAction("Index", "SupervisorHome");
+                    case "Empleado":
+                        return RedirectToAction("Index", "EmpleadoHome");
+                    case "Administrador":
+                        return RedirectToAction("Index", "AdministradorHome");
+                    case "Agente":
+                        return RedirectToAction("Index", "AgenteHome");
+                    default:
+                        return RedirectToAction("Index", "Home");
+                }
+            }
+
+            ViewBag.ErrorMessage = "Contraseña o Correo equivocados.";
+            return View();
+        }
+
+        // GET: Registro
+        public IActionResult Registro()
+        {
+            ViewData["ActivePage"] = "Register";
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Registro([Bind("Nombre,Contrasenia,Email,Telefono")] Usuario usuario)
+        {
+            usuario.RolId = 4;
+            if (ModelState.IsValid)
+            {
+                _context.Add(usuario);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Login");
+            }
+            return View(usuario);
+        }
+
+        // GET: Logout
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
         }
 
         // GET: Usuarios
@@ -48,7 +118,7 @@ namespace AP_EV4.Controllers
         // GET: Usuarios/Create
         public IActionResult Create()
         {
-            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id");
+            ViewBag.Roles = new SelectList(_context.Roles, "Id", "Id");
             return View();
         }
 
@@ -57,7 +127,7 @@ namespace AP_EV4.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nombre,Contrasenia,Email,Telefono,RolId")] Usuario usuario)
+        public async Task<IActionResult> Create([Bind("Nombre,Contrasenia,Email,Telefono,RolId")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
@@ -65,9 +135,20 @@ namespace AP_EV4.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id", usuario.RolId);
+            else
+            {
+                foreach (var modelState in ViewData.ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
+                }
+            }
+            ViewBag.Roles = new SelectList(_context.Roles, "Id", "Nombre", usuario.RolId);
             return View(usuario);
         }
+
 
         // GET: Usuarios/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -118,7 +199,7 @@ namespace AP_EV4.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RolId"] = new SelectList(_context.Roles, "Id", "Id", usuario.RolId);
+            ViewBag.Roles = new SelectList(_context.Roles, "Id", "Nombre");
             return View(usuario);
         }
 

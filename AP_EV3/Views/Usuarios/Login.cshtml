@@ -1,0 +1,24 @@
+﻿@model AP_EV4.Models.Usuario
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container">
+    <h2>Login</h2>
+    <form asp-action="Login" method="post">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label for="contrasenia">Contraseña</label>
+            <input type="password" id="contrasenia" name="contrasenia" class="form-control" required />
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        @if (ViewBag.ErrorMessage != null)
+        {
+            <div class="text-danger mt-2">@ViewBag.ErrorMessage</div>
+        }
+    </form>
+</div>
